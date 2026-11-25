@@ -1,8 +1,9 @@
 // app/api/chat/route.ts
 import { streamText, convertToModelMessages, toUIMessageStream, createUIMessageStreamResponse, UIMessage } from "ai";
-import { deepseek } from "@ai-sdk/deepseek";
 import { z } from 'zod'
 import { WORK_ASSISTANT_PROMPT } from "@/prompts/work-assistant";
+
+import { selectModel, extractRoutingText, resolveModel } from './modelRoute'
 
 const RequestSchema = z.object({
   // v7 的 UI 消息没有 content，而是 parts 数组
@@ -26,18 +27,21 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-  
     const { messages } = data
+    const uiMessages = messages as unknown as UIMessage[]
+    const modelMessages = await convertToModelMessages(uiMessages)
+    const modelSelected = await selectModel(extractRoutingText(uiMessages))
+
     const result = streamText({
-      model: deepseek("deepseek-chat"),
+      model: resolveModel(modelSelected.complexity),
       instructions: WORK_ASSISTANT_PROMPT.system,
       maxOutputTokens: 2000,
       // UI 消息要先转成模型消息（含 role/content），streamText 才能消费
-      messages: await convertToModelMessages(messages as unknown as UIMessage[]),
+      messages: modelMessages,
       onFinish({ usage }) {
         // 记录 Token 使用量（用于成本监控）
         console.log(
-          `[Chat] Tokens used - prompt: ${usage.inputTokens}, completion: ${usage.outputTokens}`
+          `[Chat]-[${modelSelected.modelId}] Tokens used - prompt: ${usage.inputTokens}, completion: ${usage.outputTokens}`
         );
       },
     });
