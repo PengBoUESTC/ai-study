@@ -1,7 +1,12 @@
 // app/api/chat/route.ts
-import { streamText, convertToModelMessages, toUIMessageStream, createUIMessageStreamResponse, UIMessage } from "ai";
+import { streamText, convertToModelMessages, toUIMessageStream, createUIMessageStreamResponse, UIMessage, isStepCount } from "ai";
 import { z } from 'zod'
 import { WORK_ASSISTANT_PROMPT } from "@/prompts/work-assistant";
+import { fileReadTool } from '@/lib/tools/file-read'
+import { fileWriteTool } from '@/lib/tools/file-write'
+import { shellExecTool } from '@/lib/tools/shell-exec'
+import { codeSearchTool } from '@/lib/tools/code-search'
+import { todoListTool } from '@/lib/tools/todo-list'
 
 import { selectModel, extractRoutingText, resolveModel } from './modelRoute'
 
@@ -35,6 +40,14 @@ export async function POST(req: Request) {
     const result = streamText({
       model: resolveModel(modelSelected.complexity),
       instructions: WORK_ASSISTANT_PROMPT.system,
+      tools: {
+        readFile: fileReadTool(),
+        writeFile: fileWriteTool(),
+        execCommand: shellExecTool(),
+        codeSearch: codeSearchTool(),
+        todoList: todoListTool()
+      },
+      stopWhen: isStepCount(5),
       maxOutputTokens: 2000,
       // UI 消息要先转成模型消息（含 role/content），streamText 才能消费
       messages: modelMessages,

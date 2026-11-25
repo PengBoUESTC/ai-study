@@ -20,8 +20,8 @@ export default function ChatPage() {
     sendMessage, // 发送一条消息并触发生成（旧版的 handleSubmit + append）
     status,      // 'submitted' | 'streaming' | 'ready' | 'error'（旧版是 isLoading）
     stop,        // 停止生成
-    error,       // 错误信息
-    regenerate,  // 重新生成最后一条回复（旧版的 reload）
+    // error,       // 错误信息
+    // regenerate,  // 重新生成最后一条回复（旧版的 reload）
   } = useChat({
     transport: new DefaultChatTransport({ api: "/api/chat" }), // 旧版的 api 选项移到了 transport 里
     onFinish({ message }) {          // 一条消息完全生成后的回调（参数从 message 变成 { message }）

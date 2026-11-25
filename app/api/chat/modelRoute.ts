@@ -56,7 +56,7 @@ type Complexity = Routing['complexity']
  */
 export const COMPLEXITY_MODEL_MAP = {
   // 简单：闲聊 / 简短问答，选最轻量、最快、最便宜的 flash
-  simple: 'deepseek-flash',
+  simple: 'deepseek-v4-flash',
   // 中等：一般分析、翻译、短代码，v4-flash 在质量与成本之间最均衡
   medium: 'deepseek-v4-flash',
   // 困难：复杂推理、长代码、深度分析，用能力最强的 v4-pro
