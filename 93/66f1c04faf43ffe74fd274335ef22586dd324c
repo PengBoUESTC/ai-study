@@ -1,0 +1,28 @@
+lib/tools/shell-exec.ts
+  h_b8a9b549099557 1-158
+app/api/chat/route.ts
+  h_b8a9b549099557 2,5-9,43-50
+lib/tools/file-write.ts
+  h_b8a9b549099557 1-99
+lib/tools/todo-list.ts
+  h_b8a9b549099557 1-217
+app/api/chat/modelRoute.ts
+  h_b8a9b549099557 59
+lib/tools/file-read.ts
+  h_b8a9b549099557 1-121
+app/page.tsx
+  h_b8a9b549099557 23-24
+lib/tools/code-search.ts
+  h_b8a9b549099557 1-370
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "9366f1c04faf43ffe74fd274335ef22586dd324c",
+  "prompts": {},
+  "humans": {
+    "h_b8a9b549099557": {
+      "author": "pengbo43 <pengbo43@jd.com>"
+    }
+  }
+}
