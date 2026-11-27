@@ -1,0 +1,29 @@
+.gitignore
+  h_b8a9b549099557 42-43
+app/api/chat/route.ts
+  h_b8a9b549099557 12,39-40
+package.json
+  h_b8a9b549099557 3,12,15,17,22-23,34-35
+.npmrc
+  h_b8a9b549099557 1
+lib/RAG/rag.ts
+  h_b8a9b549099557 1-22
+app/api/chat/modelRoute.ts
+  h_b8a9b549099557 2,11,15-17,22-23
+  h_b8a9b549099557 1
+lib/utils/compressHistory.ts
+  h_b8a9b549099557 1-35
+yarn.lock
+  h_b8a9b549099557 1-4544
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.6",
+  "base_commit_sha": "d7e11e6b9b7e0b38e78e458549ce2c19733b4550",
+  "prompts": {},
+  "humans": {
+    "h_b8a9b549099557": {
+      "author": "pengbo43 <pengbo43@jd.com>"
+    }
+  }
+}
