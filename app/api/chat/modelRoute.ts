@@ -1,39 +1,26 @@
-import { generateText, Output, isTextUIPart } from 'ai'
-import type { UIMessage } from 'ai'
+import { generateText, Output } from 'ai'
+import type { ModelMessage } from 'ai'
 import { deepseek } from '@ai-sdk/deepseek'
 import { z } from 'zod'
 
-/**
- * 提取单条 UIMessage 中的纯文本：
- * 使用 AI SDK 官方的 isTextUIPart 作为类型守卫过滤出 text part，
- * 其余类型（file / reasoning / tool 等）忽略，最后用换行拼接并 trim。
- */
-function extractTextFromMessage(message: UIMessage | undefined): string {
-  const parts = message?.parts
-  if (!Array.isArray(parts)) return ''
-
-  return parts
-    .filter(isTextUIPart)
-    .map((part) => part.text)
-    .join('\n')
-    .trim()
-}
 
 /**
  * 从 UI 消息列表中提取用于模型路由的文本。
  * 优先取最后一条含文本的 user 消息；若不存在，则退化为最后一条含文本的消息；都没有时返回空字符串。
  */
-export function extractRoutingText(messages: UIMessage[]): string {
+export function extractRoutingText(messages: ModelMessage[]): string {
   if (!Array.isArray(messages) || messages.length === 0) return ''
 
   for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i]?.role !== 'user') continue
-    const text = extractTextFromMessage(messages[i])
+    const message = messages[i]
+    if (message?.role !== 'user') continue
+    const text = message.content as string
     if (text) return text
   }
 
   for (let i = messages.length - 1; i >= 0; i--) {
-    const text = extractTextFromMessage(messages[i])
+    const message = messages[i]
+    const text = message.content as string
     if (text) return text
   }
 

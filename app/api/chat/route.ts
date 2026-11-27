@@ -9,6 +9,7 @@ import { codeSearchTool } from '@/lib/tools/code-search'
 import { todoListTool } from '@/lib/tools/todo-list'
 
 import { selectModel, extractRoutingText, resolveModel } from './modelRoute'
+import { compressHistory } from "@/lib/utils/compressHistory";
 
 const RequestSchema = z.object({
   // v7 的 UI 消息没有 content，而是 parts 数组
@@ -35,7 +36,8 @@ export async function POST(req: Request) {
     const { messages } = data
     const uiMessages = messages as unknown as UIMessage[]
     const modelMessages = await convertToModelMessages(uiMessages)
-    const modelSelected = await selectModel(extractRoutingText(uiMessages))
+    const { messages: nextMessages,  } = await compressHistory(modelMessages)
+    const modelSelected = await selectModel(extractRoutingText(nextMessages))
 
     const result = streamText({
       model: resolveModel(modelSelected.complexity),
